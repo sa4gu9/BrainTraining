@@ -29,6 +29,6 @@ showtime per card : 2 seconds
 answertime per card : 2 seconds
 
 if stage>4:  
-number of cards +1
+number of cards +1  
 else if stage<1 :  
 number of cards -1

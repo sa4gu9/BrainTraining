@@ -1,6 +1,4 @@
-# braintraing
-
-## This is reverse number memory.  
+# This is reverse number memory.  
   
 1. repeat 4 times  
 2. change stage by number of success  

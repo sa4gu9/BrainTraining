@@ -206,6 +206,7 @@ public class Stage : MonoBehaviour
     {
         currentCards.Clear();
         answerPanel.SetActive(true);
+        answerfield.ActivateInputField();
         answerWatch.Start();
 
 

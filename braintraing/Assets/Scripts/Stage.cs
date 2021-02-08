@@ -1,18 +1,31 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Stage : MonoBehaviour
+[System.Serializable]
+public class StageData
 {
     public int cards;
+    public int stage;
+}
+
+public class Stage : MonoBehaviour
+{
+    public StageData mydata;
+    public GameObject loadButton;
+
+    public bool isLoaded;
+
+
     public float answertime;
     public float showtime;
 
     int fail;
     int success;
-    int stage;
+    
 
     int order;
 
@@ -39,12 +52,12 @@ public class Stage : MonoBehaviour
         order = 0;
         fail = 0;
         success = 0;
-        cards = 3;
+        mydata.cards = 3;
         showtime = 2000;
         answertime = 2000;
         answerPanel.SetActive(false);
         resultText.text = "";
-        stage = 4;
+        mydata.stage = 4;
 
     }
 
@@ -54,7 +67,7 @@ public class Stage : MonoBehaviour
 
         if (showWatch.ElapsedMilliseconds > showtime)
         {
-            if (order < cards-1)
+            if (order < mydata.cards-1)
             {
                 ChangeShowcard(order);
                 showWatch.Restart();
@@ -84,7 +97,7 @@ public class Stage : MonoBehaviour
             {
                 if (numbers[numbers.Count-1-order].ToString() == answerfield.text)
                 {
-                    if (order < cards - 1)
+                    if (order < mydata.cards - 1)
                     {
                         answerfield.text = "";
                         order++;
@@ -133,73 +146,45 @@ public class Stage : MonoBehaviour
     {
         if (success+fail==4)
         {
+            if (!isLoaded)
+            {
+                loadButton.SetActive(true);
+            }
 
             if (success == 4)
             {
-                ChangeStage(3);
+                Changestage(3);
             }
             else if (success == 3)
             {
-                ChangeStage(2);
+                Changestage(2);
             }
             else if (success == 2)
             {
-                ChangeStage(1);
+                Changestage(1);
             }
             else if (success == 1)
             {
-                //ChangeStage(0); 변동이 없으므로 주석 처리
+                //Changestage(0); 변동이 없으므로 주석 처리
             }
             else
             {
-                ChangeStage(-1);
+                Changestage(-1);
             }
 
             success = 0;
             fail = 0;
+            SaveData();
         }
 
 
     }
 
-    private void ChangeStage(int v)
+    private void Changestage(int v)
     {
-        stage += v;
+        mydata.stage += v;
 
-        if (stage > 4)
-        {
-            stage -= 4;
-            cards++;
-        }
-        else if (stage < 1)
-        {
-            stage += 4;
-            cards--;
-        }
-
-        if (stage == 1)
-        {
-            showtime = 4000;
-            answertime = 4000;
-        }
-        else if (stage == 2)
-        {
-            showtime = 4000;
-            answertime = 2000;
-
-        }
-        else if (stage == 3)
-        {
-            showtime = 2000;
-            answertime = 4000;
-
-        }
-        else if (stage == 4)
-        {
-            showtime = 2000;
-            answertime = 2000;
-
-        }
+        
     }
 
     public void StartAnswer()
@@ -214,13 +199,54 @@ public class Stage : MonoBehaviour
 
     public void ClickStart()
     {
+        if (!isLoaded)
+        {
+            loadButton.SetActive(false);
+        }
+        
+
+        if (mydata.stage > 4)
+        {
+            mydata.stage -= 4;
+            mydata.cards++;
+        }
+        else if (mydata.stage < 1)
+        {
+            mydata.stage += 4;
+            mydata.cards--;
+        }
+
+        if (mydata.stage == 1)
+        {
+            showtime = 4000;
+            answertime = 4000;
+        }
+        else if (mydata.stage == 2)
+        {
+            showtime = 4000;
+            answertime = 2000;
+
+        }
+        else if (mydata.stage == 3)
+        {
+            showtime = 2000;
+            answertime = 4000;
+
+        }
+        else if (mydata.stage == 4)
+        {
+            showtime = 2000;
+            answertime = 2000;
+
+        }
+
         resultText.text = "";
 
         startButton.SetActive(false);
 
         List<GameObject> showCards=new List<GameObject>();
 
-        for (int i=0; i<cards; i++)
+        for (int i=0; i<mydata.cards; i++)
         {
             numbers.Add(Random.Range(1,21));
 
@@ -250,5 +276,30 @@ public class Stage : MonoBehaviour
         currentCards[i].GetComponentInChildren<Text>().color = new Color(0, 0, 0, 0);
         currentCards[i + 1].GetComponentInChildren<Text>().color = new Color(0, 0, 0, 1);
         order++;
+    }
+
+    public void ClickLoad()
+    {
+        LoadData();
+        Destroy(loadButton);
+    }
+
+    void SaveData()
+    {
+        success = 0;
+        fail = 0;
+        isLoaded = true;
+        Destroy(loadButton);
+        string jsondata=JsonUtility.ToJson(mydata,true);
+        string path = Path.Combine(Application.dataPath, "savedata_rnm.json");
+        File.WriteAllText(path, jsondata);
+    }
+
+    void LoadData()
+    {
+        isLoaded = true;
+        string path = Path.Combine(Application.dataPath, "savedata_rnm.json");
+        string jsonData = File.ReadAllText(path);
+        mydata = JsonUtility.FromJson<StageData>(jsonData);
     }
 }

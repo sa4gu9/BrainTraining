@@ -12,6 +12,7 @@ braintraing/[Bb]uild/
 braintraing/[Bb]uilds/
 braintraing/[Ll]ogs/
 braintraing/[Uu]ser[Ss]ettings/
+braintraing/Assets/savedata*.json
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data

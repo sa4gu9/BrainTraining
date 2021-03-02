@@ -12,7 +12,7 @@ public class StageData
     public int stage;
 }
 
-public class Stage : MonoBehaviour
+public class RNM : MonoBehaviour
 {
     public StageData mydata;
     public GameObject loadButton;

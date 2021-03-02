@@ -144,6 +144,7 @@ public class Stage : MonoBehaviour
 
     private void CheckTime()
     {
+        currentCards.Clear();
         if (success+fail==4)
         {
             if (!isLoaded)
@@ -189,11 +190,20 @@ public class Stage : MonoBehaviour
 
     public void StartAnswer()
     {
-        currentCards.Clear();
+        foreach(var card in currentCards)
+        {
+            card.SetActive(false);
+        }
+        
         answerPanel.SetActive(true);
         answerfield.ActivateInputField();
         answerWatch.Start();
 
+
+    }
+
+    void ShowAnswer()
+    {
 
     }
 
@@ -253,8 +263,9 @@ public class Stage : MonoBehaviour
             GameObject curCard = Instantiate(cardprefab);
             currentCards.Add(curCard);
 
+            print(40 + 200 * i / 6);
             curCard.GetComponent<RectTransform>().SetParent(canvas.transform);
-            curCard.GetComponent<RectTransform>().anchoredPosition = new Vector3(80 + 230 * i, 0, 0);
+            curCard.GetComponent<RectTransform>().anchoredPosition = new Vector3(40 + 200 * Mathf.FloorToInt(i % 6), 0-Mathf.FloorToInt(i/6)*230, 0);
             curCard.GetComponentInChildren<Text>().color = new Color(0,0,0,0);
             curCard.GetComponentInChildren<Text>().text = numbers[i].ToString();
 

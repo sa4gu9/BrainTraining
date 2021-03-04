@@ -13,7 +13,7 @@
   
 1. Memory numbers  
 2. Input the answer as opposed to the order shown, but you must add numbers.  
-(4,9,17   answer : 17,26,30)  
+(4,9,17   answer : **17,26,30**)  
 3. repeat 4 times  
 4. change stage by number of success  
   

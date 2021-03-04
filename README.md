@@ -2,8 +2,10 @@
   
 ## Reverse Number Memory
   
-1. repeat 4 times  
-2. change stage by number of success  
+1. Memory numbers  
+2. Input the answer as opposed to the order shown.  
+3. repeat 4 times  
+4. change stage by number of success  
 
 4 times : stage+3  
 3 times : stage+2  
@@ -34,3 +36,12 @@ if stage>4:
 number of cards +1  
 else if stage<1 :  
 number of cards -1
+  
+  
+## Reverse Number Add  
+  
+1. Memory numbers  
+2. Input the answer as opposed to the order shown, but you must add numbers.  
+(4,9,17   answer : 17,26,30)  
+3. repeat 4 times  
+4. change stage by number of success  

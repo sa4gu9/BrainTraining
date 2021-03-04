@@ -1,4 +1,6 @@
-# This is reverse number memory.  
+# BrainTraning  
+  
+## Reverse Number Memory
   
 1. repeat 4 times  
 2. change stage by number of success  

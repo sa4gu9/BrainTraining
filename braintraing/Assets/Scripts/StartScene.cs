@@ -19,9 +19,9 @@ public class StartScene : MonoBehaviour
 
     public void ClickButton(int order)
     {
-        if (order == 1)
-        {
-            SceneManager.LoadScene("Reverse Number Memory");
-        }
+        SceneManager.LoadScene("Reverse Number Memory");
+
+        RNM.mode = order;
+
     }
 }

@@ -14,6 +14,8 @@ public class StageData
 
 public class RNM : MonoBehaviour
 {
+    public static int mode;
+
     public StageData mydata;
     public GameObject loadButton;
 
@@ -95,7 +97,27 @@ public class RNM : MonoBehaviour
 
             if (answerWatch.ElapsedMilliseconds > answertime)
             {
-                if (numbers[numbers.Count-1-order].ToString() == answerfield.text)
+                int answer=0;
+
+                if (mode == 1)
+                {
+                    answer = numbers[numbers.Count - 1 - order];
+                }
+                else if (mode == 2)
+                {
+
+                    for (int i = numbers.Count - 1; i >= numbers.Count - 1 - order; i--)
+                    {
+                        answer += numbers[i];
+                    }
+                }
+
+                bool check = answer.ToString() == answerfield.text;
+
+                //역순으로 답 구하기
+                
+
+                if (check)
                 {
                     if (order < mydata.cards - 1)
                     {
@@ -297,19 +319,40 @@ public class RNM : MonoBehaviour
 
     void SaveData()
     {
+        string pathname=GetPathName();
+
         success = 0;
         fail = 0;
         isLoaded = true;
         Destroy(loadButton);
         string jsondata=JsonUtility.ToJson(mydata,true);
-        string path = Path.Combine(Application.dataPath, "savedata_rnm.json");
+        string path = Path.Combine(Application.dataPath, pathname);
         File.WriteAllText(path, jsondata);
+    }
+
+    private string GetPathName()
+    {
+        string name="";
+
+        if (mode == 1)
+        {
+            name = "savedata_rnm.json";
+        }
+        else if (mode == 2)
+        {
+            name = "savedata_rna.json";
+        }
+
+        return name;
     }
 
     void LoadData()
     {
+        string pathname = GetPathName();
+
+
         isLoaded = true;
-        string path = Path.Combine(Application.dataPath, "savedata_rnm.json");
+        string path = Path.Combine(Application.dataPath, pathname);
         string jsonData = File.ReadAllText(path);
         mydata = JsonUtility.FromJson<StageData>(jsonData);
     }

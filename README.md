@@ -48,5 +48,7 @@ once : not change
   
 if stage>4:  
 number of cards +1  
+stage -4  
 else if stage<1 :  
 number of cards -1
+stage +4  
